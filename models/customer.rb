@@ -62,13 +62,15 @@ class Customer
     return tickets.length()
   end
 
+# takes ticket price off of customer funds
 
   def ticket_purchase(film)
-    @funds -= film.price
-    return @funds
+    if @funds >= film.price
+      @funds -=film.price
+    else
+      p "Insufficient funds"
+    end
   end
-
-
 
 
 end
