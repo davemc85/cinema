@@ -1,5 +1,6 @@
 require_relative('../db/sql_runner.rb')
 require_relative('film.rb')
+require_relative('ticket.rb')
 
 class Customer
   attr_reader :id
@@ -8,7 +9,7 @@ class Customer
   def initialize(options)
     @id = options['id'].to_i if options['id']
     @name = options['name']
-    @funds = options['funds']
+    @funds = options['funds'].to_i
   end
 
   def save()
@@ -30,5 +31,39 @@ class Customer
     sql = "DELETE FROM customers"
     SqlRunner.run(sql)
   end
+
+  def update()
+    sql = "UPDATE customers SET (name, funds) = ($1, $2) WHERE id = $3"
+    values = [@name, @funds, @id]
+    SqlRunner.run(sql, values)
+  end
+
+  def films()   # eg customer1.films
+    sql = "SELECT films.* FROM films INNER JOIN tickets ON films.id = tickets.film_id WHERE tickets.customer_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return results.map { |film| Film.new(film)}
+  end
+
+
+  # select tickets bought by customer using id
+
+  def tickets()    # customer1.tickets
+    sql = "SELECT * FROM tickets WHERE customer_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return results.map {|ticket| Ticket.new(ticket)}
+  end
+
+
+# customer1.number_of_tickets() - number of tickets bought by specific customer
+
+  def number_of_tickets()
+    return tickets.length()
+  end
+
+
+
+
 
 end
