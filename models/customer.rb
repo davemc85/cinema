@@ -63,6 +63,11 @@ class Customer
   end
 
 
+  def ticket_purchase(film)
+    @funds -= film.price
+    return @funds
+  end
+
 
 
 
