@@ -1,20 +1,22 @@
 require_relative('../db/sql_runner.rb')
 require_relative('customer.rb')
 require_relative('film.rb')
+require_relative('screening.rb')
 
 class Ticket
 
-  attr_accessor :customer_id, :film_id
+  attr_accessor :customer_id, :film_id, :screening_id
 
   def initialize(options)
     @id = options['id'].to_i if options['id']
     @customer_id = options['customer_id'].to_i
     @film_id = options['film_id'].to_i
+    @screening_id = options['screening_id'].to_i
   end
 
   def save()
-    sql = "INSERT INTO tickets (customer_id, film_id) VALUES ($1, $2) Returning id"
-    values = [@customer_id, @film_id]
+    sql = "INSERT INTO tickets (customer_id, film_id, screening_id) VALUES ($1, $2, $3) RETURNING id"
+    values = [@customer_id, @film_id, @screening_id]
     ticket = SqlRunner.run(sql, values)[0]
     @id = ticket['id'].to_i
   end
@@ -33,12 +35,12 @@ class Ticket
   end
 
   def update()
-    sql = "UPDATE tickets SET (customer_id, film_id) = ($1, $2) WHERE id = $3"
-    values = [@customer_id, @film_id, @id]
+    sql = "UPDATE tickets SET (customer_id, film_id) = ($1, $2, $3) WHERE id = $4"
+    values = [@customer_id, @film_id, @screening_id, @id]
     SqlRunner.run(sql, values)
   end
 
-  
+
 
 
 end
