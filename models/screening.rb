@@ -32,7 +32,7 @@ class Screening
     SqlRunner.run(sql)
   end
 
-
+# lists customers at a specific screening
   def customers()   # eg screening1.customers
     sql = "SELECT customers.* FROM customers INNER JOIN tickets ON customers.id = tickets.customer_id WHERE tickets.screening_id = $1"
     values = [@id]
@@ -41,6 +41,7 @@ class Screening
   end
 
 
+# number of customers at a specific screening
 
   def number_of_customers
     return customers.length

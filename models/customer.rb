@@ -82,15 +82,4 @@ class Customer
   end
 
 
-  def buy_ticket(screening)
-    sql = "INSERT INTO tickets (customer_id, screening_id) VALUES ($1, $2) RETURNING id"
-    values = [@id, screening.id]
-    SqlRunner.run(sql, values)
-
-    @funds -= screening.film.price
-
-    update()
-
-  end
-
 end
