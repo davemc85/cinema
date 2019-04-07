@@ -33,4 +33,18 @@ class Screening
   end
 
 
+  def customers()   # eg screening1.customers
+    sql = "SELECT customers.* FROM customers INNER JOIN tickets ON customers.id = tickets.customer_id WHERE tickets.screening_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return results.map { |customer| Customer.new(customer)}
+  end
+
+
+
+  def number_of_customers
+    return customers.length
+  end
+
+
 end

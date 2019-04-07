@@ -40,27 +40,28 @@ class Film
     SqlRunner.run(sql, values)
   end
 
-  def customers()   # eg film1.customers
-    sql = "SELECT customers.* FROM customers INNER JOIN tickets ON customers.id = tickets.customer_id WHERE tickets.film_id = $1"
+  # def customers()   # eg film1.customers
+  #   sql = "SELECT customers.* FROM customers INNER JOIN tickets ON customers.id = tickets.customer_id WHERE tickets.film_id = $1"
+  #   values = [@id]
+  #   results = SqlRunner.run(sql, values)
+  #   return results.map { |customer| Customer.new(customer)}
+  # end
+
+
+# select screenings bought for films using id
+
+  def screenings()    # film1.screenings
+    sql = "SELECT * FROM screenings WHERE film_id = $1"
     values = [@id]
     results = SqlRunner.run(sql, values)
-    return results.map { |customer| Customer.new(customer)}
+    return results.map {|screening| Screening.new(screening)}
   end
 
+  # # film1.number_of_tickets() - number of tickets sold for a specific film
+  #
+  # def number_of_tickets()
+  #   return tickets.length()
+  # end
 
-# select tickets bought for films using id
-
-  def tickets()    # film1.tickets
-    sql = "SELECT * FROM tickets WHERE film_id = $1"
-    values = [@id]
-    results = SqlRunner.run(sql, values)
-    return results.map {|ticket| Ticket.new(ticket)}
-  end
-
-  # film1.number_of_tickets() - number of tickets sold for a specific film
-
-  def number_of_tickets()
-    return tickets.length()
-  end
 
 end
